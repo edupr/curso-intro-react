@@ -10,7 +10,7 @@
   font-family: "Montserrat";
   font-weight: 400;
   color: #1e1e1f;
-  box-shadow: 0px 5px 50px rgba(32, 35, 41, 0.25);
+  /* box-shadow: 0px 5px 50px rgba(32, 35, 41, 0.25); */
 }
 
 .TodoSearch::placeholder {
@@ -20,5 +20,6 @@
 }
 
 .TodoSearch:focus {
-  outline-color: #4886f9;
+  /* outline-color: #4886f9; */
+  box-shadow: 0 10px 40px 4px rgba(152, 152, 152, 0.56);
 }
