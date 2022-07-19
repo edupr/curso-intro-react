@@ -40,6 +40,7 @@ function App() {
     });
   }
 
+  // Método saveTodos
   const saveTodos = (newTodos) => {
     const stringifiedTodos = JSON.stringify(newTodos);
     localStorage.setItem("TODOS_V1", stringifiedTodos);
@@ -51,8 +52,8 @@ function App() {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-    saveTodos(newTodos);
-
+    // saveTodos(newTodos);
+    setTodos(newTodos);
     console.log("todoIndex: ", todoIndex);
   };
 
