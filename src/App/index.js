@@ -1,28 +1,38 @@
 import React from "react";
 import { AppUI } from "./AppUI";
-// import './App.css';
 
-const defaultTodos = [
-  { text: "Cortar cebolla", completed: true },
-  { text: "Tomar el curso de intro a React!", completed: false },
-  { text: "Llorar con la llorona!", completed: false },
-  { text: "LALALALAA", completed: true },
-];
+// const defaultTodos = [
+//   { text: 'Cortar cebolla', completed: true },
+//   { text: 'Tomar el cursso de intro a React', completed: false },
+//   { text: 'Llorar con la llorona', completed: true },
+//   { text: 'LALALALAA', completed: false },
+// ];
 
-function App() {
-  const localStorageTodos = localStorage.getItem("TODOS_V1");
-  let parsedTodos;
+function useLocalStorage(itemName, initialValue) {
+  const localStorageItem = localStorage.getItem(itemName);
+  let parsedItem;
 
-  if (!localStorageTodos) {
-    console.log("No existe localStorage");
-    localStorage.setItem("TODOS_V1", JSON.stringify([]));
-    parsedTodos = [];
+  if (!localStorageItem) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue));
+    parsedItem = initialValue;
   } else {
-    console.log("Existe localStorage");
-    parsedTodos = JSON.parse(localStorageTodos);
+    parsedItem = JSON.parse(localStorageItem);
   }
 
-  const [todos, setTodos] = React.useState(parsedTodos);
+  const [item, setItem] = React.useState(parsedItem);
+
+  const saveItem = (newItem) => {
+    const stringifiedItem = JSON.stringify(newItem);
+    localStorage.setItem(itemName, stringifiedItem);
+    setItem(newItem);
+  };
+
+  return [item, saveItem];
+}
+
+function App() {
+  const [patito, savePatito] = useLocalStorage("PATITO_V1", "FERNANDO");
+  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
   const [searchValue, setSearchValue] = React.useState("");
 
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
@@ -40,34 +50,22 @@ function App() {
     });
   }
 
-  // Método saveTodos
-  const saveTodos = (newTodos) => {
-    const stringifiedTodos = JSON.stringify(newTodos);
-    localStorage.setItem("TODOS_V1", stringifiedTodos);
-    setTodos(newTodos);
-  };
-
-  // Método completar TODOs
   const completeTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
-    newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-    // saveTodos(newTodos);
-    setTodos(newTodos);
-    console.log("todoIndex: ", todoIndex);
+    newTodos[todoIndex].completed = true;
+    saveTodos(newTodos);
   };
 
-  // Método eliminar TODOs
   const deleteTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
     const newTodos = [...todos];
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos);
-
-    console.log("todoIndex: ", todoIndex);
   };
 
-  return (
+  return [
+    <p>{patito}</p>,
     <AppUI
       totalTodos={totalTodos}
       completedTodos={completedTodos}
@@ -76,8 +74,8 @@ function App() {
       searchedTodos={searchedTodos}
       completeTodo={completeTodo}
       deleteTodo={deleteTodo}
-    />
-  );
+    />,
+  ];
 }
 
 export default App;
