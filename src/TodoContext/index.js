@@ -1,11 +1,9 @@
 import React from "react";
 import { useLocalStorage } from "./useLocalStorage";
 
-// Al crear el contexto también podemos pasarle un valor inicial entre los paréntesis
 const TodoContext = React.createContext();
 
 function TodoProvider(props) {
-  // Nos traemos todo el estado y las funciones de nuestra aplicación que queremos globales
   const {
     item: todos,
     saveItem: saveTodos,
@@ -29,6 +27,15 @@ function TodoProvider(props) {
       return todoText.includes(searchText);
     });
   }
+  // Función para añadir un nuevo TODO
+  const addTodo = (text) => {
+    const newTodos = [...todos];
+    newTodos.push({
+      completed: false,
+      text,
+    });
+    saveTodos(newTodos);
+  };
 
   const completeTodo = (text) => {
     const todoIndex = todos.findIndex((todo) => todo.text === text);
@@ -44,7 +51,6 @@ function TodoProvider(props) {
     saveTodos(newTodos);
   };
 
-  // Retornamos nuestro proveedor con nuestro contexto en la etiqueta value, que recibirá a toda nuestra aplicación, por eso necesitamos la prop children
   return (
     <TodoContext.Provider
       value={{
@@ -55,6 +61,7 @@ function TodoProvider(props) {
         searchValue,
         setSearchValue,
         searchedTodos,
+        addTodo,
         completeTodo,
         deleteTodo,
         openModal,
@@ -66,5 +73,4 @@ function TodoProvider(props) {
   );
 }
 
-// Exportamos nuestro proveedor y nuestro contexto, en el context también esta el consumer, para acceder a nuestro contexto
 export { TodoContext, TodoProvider };
