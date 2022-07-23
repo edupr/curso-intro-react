@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/curso-intro-react/static/media/delete.f6b8972e.svg"
   },
   {
-    "revision": "6aa74b4f406616be4b9468bc4252ed35",
+    "revision": "6efab679b3f584544fd728777904e008",
     "url": "/curso-intro-react/index.html"
   }
 ];
